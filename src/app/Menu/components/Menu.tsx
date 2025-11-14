@@ -10,7 +10,6 @@ import ActualizarUbicacion from "./actualizarUbicacion";
 import PaginaMetodosAutenticacion from "../../metodosAutenticacion/metodosAuten/pagina";
 import { MessageSeguridad } from "./messageSeguridad";
 import { MensajeCerrarSesion } from "./mensajeCerrarSesion";
-import { getSocket } from "../../teamsys/realtime/socketClient";
 
 export default function SimpleProfileMenu() {
   const [showCerrarSesionMessage, setShowCerrarSesionMessage] = useState(false);
@@ -42,7 +41,7 @@ export default function SimpleProfileMenu() {
   const handleConfirmLogout = () => {
     // Eliminamos datos de sesión y emitimos el evento de logout
     localStorage.removeItem("authToken");
-    sessionStorage.removeItem("authToken");
+    sessionStorage.clear();
     localStorage.removeItem("userData");
     sessionStorage.removeItem("userData");
 

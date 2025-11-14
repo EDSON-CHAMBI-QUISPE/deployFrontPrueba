@@ -1,32 +1,33 @@
-// src/app/teamsys/hooks/useForceLogout.tsx
 "use client";
 
 import { useEffect } from "react";
 import { getSocket } from "../realtime/socketClient";
+import { cerrarSesion } from "../services/UserService";
 
 export function useForceLogout(userId: string | null) {
-  useEffect(() => {
+    console.log("🔥 useForceLogout EJECUTADO. userId =", userId);
+
+    useEffect(() => {
+    console.log("🔍 [useForceLogout] Hook montado. userId =", userId);
     if (!userId) return;
+    console.log("🔥 getSocket fue llamado");
 
     const socket = getSocket();
 
     const onConnect = () => {
-      // Avisamos al backend qué usuario es este socket
+        console.log("🔌 [Socket] Conectado con ID:", socket.id);
+      console.log("📡 [Socket] Emitting auth for user:", userId);
       socket.emit("auth", userId);
     };
 
     const onForceLogout = () => {
-      // Limpia tokens y manda a login
-      sessionStorage.clear();
-      localStorage.clear();
-
-      alert(
-        "Tu sesión fue cerrada porque se cerraron las sesiones en otros dispositivos."
-      );
-      window.location.href = "/login";
+        console.log("🚨 [Socket] force-logout recibido desde el servidor!");
+      cerrarSesion();
     };
 
+    // Si ya está conectado, autenticamos directamente
     if (socket.connected) {
+      console.log("⚡ [Socket] Ya estaba conectado antes");
       onConnect();
     }
 
