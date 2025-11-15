@@ -152,10 +152,6 @@ export async function setupTwoFactor(token: string) {
   }
   const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(data.message || 'Error al generar configuración 2FA');
-  }
-
   return data.data; // contiene { secret, qrCode, backupCodes }
 }
 export async function verifyTwoFactor(token: string, secret: string, code: string) {
@@ -173,9 +169,6 @@ export async function verifyTwoFactor(token: string, secret: string, code: strin
   }
   const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(data.message || 'Error al verificar el código 2FA');
-  }
 
   return data;
 }
