@@ -285,17 +285,18 @@ export async function cambiarContrasenaHU3(payload: {
   actual: string;
   nueva: string;
   confirmacion: string;
-}): Promise<{ ok: boolean; message: string }>  {
+},socketId?:string): Promise<{ ok: boolean; message: string }>  {
   // usar tu lector de token (sin tocarlo)
   const token = getAccessToken();
   if (!token) return { ok: false, message: "No hay sesión activa." };
-
+console.log(`socket ${socketId}`)
   try {
     const res = await fetch(`${API_URL}/api/teamsys/usuario/cambiar-contrasena`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Bearer requerido
+        Authorization: `Bearer ${token}`, 
+        ...(socketId ? { "x-socket-id": socketId } : {}),// Bearer requerido
       },
       // claves con ñ, entre comillas (según contrato que te pasaron)
       body: JSON.stringify({
